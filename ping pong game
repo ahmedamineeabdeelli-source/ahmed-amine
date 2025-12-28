@@ -1,0 +1,125 @@
+import turtle
+import tkinter as tk
+window = turtle.Screen()
+window.title("ping pong")
+window.setup(width=800, height=600)
+window.tracer(0)
+window.bgcolor(.1, .1, .1)
+
+window.update()
+ball = turtle.Turtle()   
+ball.speed(0)
+ball.shape("circle")
+ball.color("white")
+ball.penup()
+ball.goto(0, 0)
+ball.shapesize(stretch_len=1, stretch_wid=1)
+ball_dx, ball_dy = 1 , 1 
+ball_speed = .3
+
+center_line = turtle.Turtle()
+center_line.speed(0)
+center_line.color("white")
+center_line.shape("square")
+center_line.shapesize(stretch_wid=25, stretch_len=0.2)
+center_line.penup()
+center_line.goto(0, 0)
+
+player1 = turtle.Turtle()
+player1.speed(0)
+player1.shape("square")
+player1.shapesize(stretch_wid=5, stretch_len=1)
+player1.color("blue")
+player1.penup()
+player1.goto(-350, 0)
+player2 = turtle.Turtle()
+player2.speed(0)
+player2.shape("square")
+player2.shapesize(stretch_wid=5, stretch_len=1)
+player2.color("red")
+player2.penup()
+player2.goto(350, 0)
+score = turtle.Turtle()
+score.speed=0
+score.color("white")
+score.penup()
+score.goto(0, 260)
+player1_score = 0
+player2_score = 0
+score.write("player1: 0 0 :player2 ", align="center", font=("courier", 24, "normal"))
+score.hideturtle()
+players_speed = 20
+
+def restart_game():
+    global player1_score, player2_score, ball_dx, ball_dy
+    player1_score = 0
+    player2_score = 0
+    ball.goto(0, 0)
+    ball_dx = 1
+    ball_dy = 1
+    player1.goto(-350, 0)
+    player2.goto(350, 0)
+    score.clear()
+    score.write("player1: 0 0 :player2 ", align="center", font=("courier", 24, "normal"))
+def player1_up():
+    player1.sety(player1.ycor() + 20)
+def player1_down():
+    player1.sety(player1.ycor() - 20)
+def player2_up():
+    player2.sety(player2.ycor() + 20)
+def player2_down():
+    player2.sety(player2.ycor() - 20)
+window.listen()
+window.onkeypress(player1_up, "a")
+window.onkeypress(player1_down, "w")
+window.onkeypress(player2_up, "Up")
+window.onkeypress(player2_down, "Down")
+
+window.update()
+
+root = window._root
+restart_button = tk.Button(root, text="Restart Game", command=restart_game)
+restart_button.place(x=650, y=550)
+
+while True:
+    window.update()
+    ball.setx(ball.xcor() + (ball_dx * ball_speed))
+    ball.sety(ball.ycor() + (ball_dy * ball_speed))
+    
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball_dy *= -1
+    if ball.ycor() < -290:
+        ball.sety(-290)
+        ball_dy *= -1
+
+    if ball.xcor() < -340 and ball.xcor() > -360 and ball.ycor() < player1.ycor() + 50 and ball.ycor() > player1.ycor() - 50:
+        ball.setx(-340)
+        ball_dx *= -1
+    
+    if ball.xcor() > 340 and ball.xcor() < 360 and ball.ycor() < player2.ycor() + 50 and ball.ycor() > player2.ycor() - 50:
+        ball.setx(340)
+        ball_dx *= -1
+    
+    if ball.xcor() > 390:
+        player2_score += 1
+        ball.goto(0, 0)
+        ball_dx *= -1  
+    if ball.xcor() < -390:
+        player1_score += 1
+        ball.goto(0, 0)
+        ball_dx *= -1
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
